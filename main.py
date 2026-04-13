@@ -1,14 +1,12 @@
-from fastapi.testclient import TestClient
-from main import app
+from fastapi import FastAPI
 
-client = TestClient(app)
+app = FastAPI()
 
-def test_read_root():
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.json() == {"mensagem": "API funcionando!"}
+@app.get("/")
+def read_root():
+    return {"mensagem": "API funcionando!"}
 
-def test_somar():
-    response = client.get("/somar/5/3")
-    assert response.status_code == 200
-    assert response.json() == {"resultado": 8}
+@app.get("/somar/{a}/{b}")
+def somar(a: int, b: int):
+    # Apenas retorna a soma dos dois números
+    return {"resultado": a + b}
